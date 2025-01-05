@@ -83,4 +83,15 @@ rgba(35,37,58,.9),
 rgba(35,37,58,.9), 
 rgba(24,40,72,.2));
 }
- 
+
+/* 确保顶部图片不被遮挡 */
+header, #header {
+    position: relative;
+    z-index: 100;
+}
+
+/* 避免其他背景色覆盖顶部 */
+body {
+    background-color: transparent !important;
+}
+
