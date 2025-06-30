@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>配置Android真机基本环境 | Samsāraのblog</title><meta name="author" content="Samsāra"><meta name="copyright" content="Samsāra"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="配置Android真机基本环境一、前言 需要开了oem锁 尽量不要用华为的线🔗，血的教训TT华为的一些协议不一样的，用pixel的官方线或红米之类的，注意有些线只支持充电   二、配置Android基本环境2.1 配置Android SDK官网：https:&#x2F;&#x2F;developer.android.com&#x2F;studio&#x2F;releases&#x2F;platform-tools把D:...\platform-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置Android真机基本环境">
+<meta property="og:url" content="http://example.com/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Samsāraのblog">
+<meta property="og:description" content="配置Android真机基本环境一、前言 需要开了oem锁 尽量不要用华为的线🔗，血的教训TT华为的一些协议不一样的，用pixel的官方线或红米之类的，注意有些线只支持充电   二、配置Android基本环境2.1 配置Android SDK官网：https:&#x2F;&#x2F;developer.android.com&#x2F;studio&#x2F;releases&#x2F;platform-tools把D:...\platform-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg">
+<meta property="article:published_time" content="2025-04-30T04:36:09.000Z">
+<meta property="article:modified_time" content="2025-06-30T05:39:51.464Z">
+<meta property="article:author" content="Samsāra">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="环境搭建">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg"><link rel="shortcut icon" href="/image/miao.png"><link rel="canonical" href="http://example.com/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '配置Android真机基本环境',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/styles/main.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/image/eye.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/image/boy.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 门派</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 藏宝阁</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Samsāraのblog</span></a><a class="nav-page-title" href="/"><span class="site-name">配置Android真机基本环境</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 门派</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 藏宝阁</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">配置Android真机基本环境</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-30T04:36:09.000Z" title="发表于 2025-04-30 12:36:09">2025-04-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-30T05:39:51.464Z" title="更新于 2025-06-30 13:39:51">2025-06-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AE%9E%E6%88%98/">实战</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="配置Android真机基本环境"><a href="#配置Android真机基本环境" class="headerlink" title="配置Android真机基本环境"></a>配置Android真机基本环境</h1><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><ul>
+<li>需要开了oem锁</li>
+<li>尽量<strong>不要用华为</strong>的线🔗，血的教训TT华为的一些协议不一样的，用pixel的官方线或红米之类的，注意有些线只支持充电</li>
+<li></li>
+</ul>
+<h2 id="二、配置Android基本环境"><a href="#二、配置Android基本环境" class="headerlink" title="二、配置Android基本环境"></a>二、配置Android基本环境</h2><h3 id="2-1-配置Android-SDK"><a href="#2-1-配置Android-SDK" class="headerlink" title="2.1 配置Android SDK"></a>2.1 配置Android SDK</h3><p>官网：<a target="_blank" rel="noopener" href="https://developer.android.com/studio/releases/platform-tools">https://developer.android.com/studio/releases/platform-tools</a><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304842.png" alt=""><br>把D:...\platform-tools放到你的环境变量里<br>然后打开cmd/powershell，输入<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb --version</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304843.png" alt=""><br>这就是配好了</p>
+<h3 id="2-2-配置USB调试"><a href="#2-2-配置USB调试" class="headerlink" title="2.2 配置USB调试"></a>2.2 配置USB调试</h3><p>打开设置-关于本机-bulid号连续点击<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304844.png" alt=""><br>然后退回上一页，在设置里找到开发者选项<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304845.png" alt=""><br>确保</p>
+<ul>
+<li>oem锁开</li>
+<li>USB调试开<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304846.png" alt=""></li>
+</ul>
+<p>往下拉会有个默认USB配置，记得点到文件传输</p>
+<blockquote>
+<p>如果黑色不可选换一根红米之类反正不是华为的线</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304847.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304848.png" alt=""></p>
+<h2 id="三、配置root环境"><a href="#三、配置root环境" class="headerlink" title="三、配置root环境"></a>三、配置root环境</h2><p>市面上magisk的教程比较多，所以本文以kernelsu为例子，kernelsu的功能亲测更强大。<br>小tips：kernel需要安卓13及以上版本，否则无法root。安卓12以下老老实实去magisk吧。</p>
+<h3 id="3-1-查看内核版本"><a href="#3-1-查看内核版本" class="headerlink" title="3.1 查看内核版本"></a>3.1 查看内核版本</h3><p>用USB线连接电脑和手机，在powershell里输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell <span class="built_in">uname</span> -r </span><br></pre></td></tr></table></figure></p>
+<h3 id="3-2-下载kernelsu-apk"><a href="#3-2-下载kernelsu-apk" class="headerlink" title="3.2 下载kernelsu.apk"></a>3.2 下载kernelsu.apk</h3><p> 官网链接：<a target="_blank" rel="noopener" href="https://kernelsu.com/kernelsu-download.html">https://kernelsu.com/kernelsu-download.html</a><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304799.png" alt=""><br> 打开powershell<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install KernelSU_v1.0.5_12081-release.apk</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304801.png" alt=""></p>
+<h3 id="3-3-下载-KernelSU"><a href="#3-3-下载-KernelSU" class="headerlink" title="3.3 下载 KernelSU"></a>3.3 下载 KernelSU</h3><p> 参考：<a target="_blank" rel="noopener" href="https://kernelsu.com/">https://kernelsu.com/</a></p>
+<h4 id="3-3-1-下载-KernelSU-img"><a href="#3-3-1-下载-KernelSU-img" class="headerlink" title="3.3.1 下载 KernelSU.img"></a>3.3.1 下载 KernelSU.img</h4><p> github：<a target="_blank" rel="noopener" href="https://github.com/tiann/KernelSU/releases/tag/v1.0.5">https://github.com/tiann/KernelSU/releases/tag/v1.0.5</a><br> 蓝奏盘：<a target="_blank" rel="noopener" href="https://mrzzoxo.lanzoue.com/b02qi7toh">https://mrzzoxo.lanzoue.com/b02qi7toh</a><br>选择合适的版本，骁龙一般是 boot.img，联发科一般是 boot-gz.img，如果使用某个压缩格式成功开机，后续可继续用这个格式。<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304803.png" alt=""><br>下载完解压好先放这进行下一步</p>
+<h4 id="3-3-2-下载-系统包和payload-dumper-go"><a href="#3-3-2-下载-系统包和payload-dumper-go" class="headerlink" title="3.3.2 下载 系统包和payload-dumper-go"></a>3.3.2 下载 系统包和payload-dumper-go</h4><p>系统包：<a target="_blank" rel="noopener" href="https://magiskcn.com/roms.html">https://magiskcn.com/roms.html</a></p>
+<p>蓝奏盘：<a target="_blank" rel="noopener" href="https://mrzzoxo.lanzoue.com/b02plgdpi">https://mrzzoxo.lanzoue.com/b02plgdpi</a><br>@payload-dumper-go.zip</p>
+<hr>
+<p>ROM包：<a target="_blank" rel="noopener" href="https://magiskcn.com/roms.html">https://magiskcn.com/roms.html</a></p>
+<hr>
+<p><strong>1、选择合适的rom包，我是pixel6安卓14，下面14的都可以下尽量下新一点的</strong><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304806.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304807.png" alt=""></p>
+<p><strong>2、把payload.bin放到payload-dumper-go文件夹下</strong></p>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304808.png" alt=""></p>
+<p><strong>3、打开打开CMD命令行.bat，输入b，打开img文件夹就可以看到boot.img了</strong></p>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304809.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304810.png" alt=""></p>
+<p><strong>4、传输boot.img到手机</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push boot.img /storage/emulated/0/Download/</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304811.png" alt=""></p>
+<p><strong>5、打开kernelsu.apk-主页-安装-选择一个文件-boot.img-安装</strong><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304813.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304814.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304815.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304816.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304817.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304818.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304819.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304820.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304822.png" alt=""></p>
+<p>这里你的Download文件夹里会多一个kernelsu_patched_xxxx_xxxx.img文件，这个就是你刷入的系统了。（我这原来刷过一遍了所以有两个）<br>⭐<strong>每个人的文件刷出来不一样</strong>，所以不要直接用，要自己找。</p>
+<h3 id="3-3-3-adb-fastboot-刷入系统"><a href="#3-3-3-adb-fastboot-刷入系统" class="headerlink" title="3.3.3 adb-fastboot+刷入系统"></a>3.3.3 adb-fastboot+刷入系统</h3><p>adb-fastboot：<a target="_blank" rel="noopener" href="https://mrzzoxo.lanzoue.com/b02plghuh">https://mrzzoxo.lanzoue.com/b02plghuh</a><br>@adb-fastboot。zip</p>
+<p><strong>1、把<code>kernelsu_patched_xxxx_xxxx.img</code>传回电脑，放到<code>adb-fastboot</code> 目录</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb pull /storage/emulated/0/Download/kernelsu_patched_xxxx_xxx.img 你的windows路径</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304823.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304824.png" alt=""></p>
+<p><strong>2、进入bootloader</strong></p>
+<p>打开powershell输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb reboot bootloader</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、刷入<code>kernelsu_patched_xxxx_xxxx.img</code></strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fastboot flash boot kernelsu_patched_xxxx_xxxx.img</span><br><span class="line">fastboot reboot</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304825.png" alt=""></p>
+<p>这就是刷好了<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304826.png" alt=""></p>
+<h3 id="3-4-开启root权限"><a href="#3-4-开启root权限" class="headerlink" title="3.4 开启root权限"></a>3.4 开启root权限</h3><p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301335444.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301335445.png" alt=""></p>
+<h2 id="四、常用的软件"><a href="#四、常用的软件" class="headerlink" title="四、常用的软件"></a>四、常用的软件</h2><h3 id="4-1-frida"><a href="#4-1-frida" class="headerlink" title="4.1 frida"></a>4.1 frida</h3><h4 id="4-1-1-安装frida"><a href="#4-1-1-安装frida" class="headerlink" title="4.1.1 安装frida"></a>4.1.1 安装frida</h4><p>在powershell里输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install frida</span><br><span class="line">pip install frida-tools</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-1-2-frida-server"><a href="#4-1-2-frida-server" class="headerlink" title="4.1.2 frida-server"></a>4.1.2 frida-server</h4><p>frida链接：<a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a></p>
+<p>注意先查看你的frida version，需要选择相应版本的firdaserver<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida --version</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304828.png" alt=""><br>找到release里相应的版本<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304829.png" alt=""><br>我手机是amd64的<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304830.png" alt=""><br>解压出来长这样，你可以按F2给文件改个名字防止检测<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304831.png" alt=""><br>把它推送到手机<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb push fs /data/local/tmp/</span><br><span class="line">fs是我改了名字的fridaserver</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304832.png" alt=""></p>
+<h3 id="4-2-MT管理器-NP管理器"><a href="#4-2-MT管理器-NP管理器" class="headerlink" title="4.2 MT管理器/NP管理器"></a>4.2 MT管理器/NP管理器</h3><p>@ MT管理器.zip<br>@ NP管理器.zip</p>
+<p>MT管理器是收费软件，NP平替</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install MT管理器_2.11.8.apk</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-Zygisk-Next"><a href="#4-3-Zygisk-Next" class="headerlink" title="4.3 Zygisk-Next"></a>4.3 Zygisk-Next</h3><p>github：<a target="_blank" rel="noopener" href="https://github.com/Dr-TSNG/ZygiskNext/releases/tag/v1.2.8">https://github.com/Dr-TSNG/ZygiskNext/releases/tag/v1.2.8</a><br>@Zygisk-Next-1.2.8-512-4b5d6ad-release.zip<br>Zygisk-Next和lposed刷入教程一样的，一起写在下面了</p>
+<h3 id="4-4-Lsposed模块"><a href="#4-4-Lsposed模块" class="headerlink" title="4.4 Lsposed模块"></a>4.4 Lsposed模块</h3><p>Github：<br>@LSPosed-v1.9.2-7024-zygisk-release.zip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push LSPosed-v1.9.2-7024-zygisk-release.zip /storage/emulated/0/Download/</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304835.png" alt=""></p>
+<p>打开kernelsu，模块-安装<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304836.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304837.png" alt=""><br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304838.png" alt=""><br>重启，通过拨号键输入 <em>#</em>#5776733#<em>#</em> 进入 LSPosed<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304839.png" alt=""><br>点进去建立快捷方式<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304840.png" alt=""><br>⭐如果点不开去看你可能遇到的问题</p>
+<h3 id="4-5-算法助手"><a href="#4-5-算法助手" class="headerlink" title="4.5 算法助手"></a>4.5 算法助手</h3><p>github：<a target="_blank" rel="noopener" href="https://github.com/Xposed-Modules-Repo/com.junge.algorithmaide/releases/tag/212-2.1.2">https://github.com/Xposed-Modules-Repo/com.junge.algorithmaide/releases/tag/212-2.1.2</a><br>@ 算法助手.zip</p>
+<p>这个需要装好zygisk和LSPosed才能用（有先后顺序）</p>
+<h2 id="五、你可能遇到的问题"><a href="#五、你可能遇到的问题" class="headerlink" title="五、你可能遇到的问题"></a>五、你可能遇到的问题</h2><h3 id="5-1-一直waiting-for-device"><a href="#5-1-一直waiting-for-device" class="headerlink" title="5.1 一直waiting for device"></a>5.1 一直waiting for device</h3><p>1、没装驱动，去看设备管理器里你的设备有没有黄色感叹号，这个网上很多解决方式<br>2、线的问题，华为的线协议不太一样，换个线<br>3、开发者模式-USB偏好设置里USB用途没选到文件传输/Andorid Auto</p>
+<h3 id="5-2-lsposed模块打不开，错误报告包含的数据来自于系统各自日志…"><a href="#5-2-lsposed模块打不开，错误报告包含的数据来自于系统各自日志…" class="headerlink" title="5.2 lsposed模块打不开，错误报告包含的数据来自于系统各自日志…."></a>5.2 lsposed模块打不开，错误报告包含的数据来自于系统各自日志….</h3><p>错误日志：<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301304841.png" alt=""><br>解决方法：<br>1、<code>adb uninstall com.google.android.art</code><br>2、更换lsposed，用lsposed mod或者更新的lsposed，亲测这个方法比较有用<br>lsposed1.10.1：<a target="_blank" rel="noopener" href="https://github.com/topics/xposed">https://github.com/topics/xposed</a></p>
+<h3 id="5-3-Wi-Fi-“网络连接受限”"><a href="#5-3-Wi-Fi-“网络连接受限”" class="headerlink" title="5.3 Wi-Fi “网络连接受限”"></a>5.3 Wi-Fi “网络连接受限”</h3><p>换个服务器就写，参考这篇文章<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/leotiger/p/18308609">解决Pixel、Lineage等原始系统中的WIFI网络连接受限问题</a></p>
+<hr>
+<p>Android逆向之旅刚刚启程，祝你顺利</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Samsāra</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/">http://example.com/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Samsāraのblog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android/">Android</a><a class="post-meta__tags" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></div><div class="post-share"><div class="social-share" data-image="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/06/15/ollvm-BCF%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="ollvm_BCF源码阅读"><img class="cover" src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506150134514.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">ollvm_BCF源码阅读</div></div><div class="info-2"><div class="info-item-1">虚假控制流 BCF (Bogus Control Flow)原理： 虚假控制流混淆通过加入包含不透明谓词的条件跳转（永真or永假）和不可达的基本块，来干扰 IDA 的控制流分析和 F5 反汇编。  反混淆：1、将全局变量赋值并将 segment 设为只读。  对于常规的 ollvm 的 bcf 混淆来说，bcf 的不透明谓词都是处于 .bss段 中。 Edit-&gt;Segments-&gt;Edit segment 将 Write 复选框取消勾选， .bss段 就设为只读  2、d810  3、idapython patch 不透明谓词 源码位置：obfuscator\lib\Transforms\Obfuscation\BogusControlFlow.cpp 源码解析Pass结构与参数12345struct BogusControlFlow : public FunctionPass &#123;    static char ID; // Pass identification    bool flag;    BogusControlFlow() :...</div></div></div></a><a class="pagination-related" href="/2025/03/26/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="IDA使用技巧"><img class="cover" src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202503260242475.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">IDA使用技巧</div></div><div class="info-2"><div class="info-item-1">这两天做题的时候同届的pwn师傅sakura来问有没有可以修改IDA局部变量的方法。研究了一下感觉很有意思，于是单独开一篇文章记录我经常用到的IDA小技巧。 修改局部变量IDAIDA有两种实现方式，我在网上查到可以force new variable，但是我一直没成功。 实现效果： 步骤：因为可以观察到都是分开赋值的   我们在var_5那边按U  我们的目标是分出一个char+int，因为我得需求是让v2[0]单独分出来变成char，v2[1]-v2[4]变成四字节的int，所以我们选择1+4 在01的地方按N重命名成i，在05的地方选择建立数组（可以按A）在N成opcode   回到executeBrainfuck按F5  接着来改汇编 因为IDA在反编译的时候，会根据变量的访问方式和指令来推断变量类型  1mov     dword ptr [rbp+opcode+1], 0  ; 赋值了 4 个字节 opcode[1]之后是 4 个连续的字节，IDA会推测opcode[5]这样的存储 我们把它nop掉 1、opcode+1字节数显着地4初始化，IDA...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/01/19/Android-%E8%AF%BE%E7%A8%8B%E6%80%BB%E7%BB%93/" title="Android-课程总结"><img class="cover" src="https://raw.githubusercontent.com/QYQS1/picture/main/test/202501192318700.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-19</div><div class="info-item-2">Android-课程总结</div></div><div class="info-2"><div class="info-item-1">参考 正己老师的《安卓逆向这档事》 基础知识与手机建立连接模拟器123adb connect 127.0.0.1:端口号adb devicesadb -s 127.0.0.1:端口号 shell 注意：我的是mumu模拟器，每次都要到多开器里面查看adb端口建立连接，但是正常应该可以直接adb devices&amp;adb shell。模拟器是这样的TT 真机手机开开发者版本和USB调试，然后通过数据线连接  有一些数据线只能充电，第一次连接电脑的时候手机上会弹出要求允许 USB 调试访问。确保你点击了“允许”按钮。 如果没弹出就换一根数据线/重启。  12adb devicesadb shell 文件传输传文件进windows123adb -s 127.0.0.1:16384 shell pm list packagesadb -s 127.0.0.1:16384 shell pm path com.chaoxing.mobileadb -s 127.0.0.1:16384 pull...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/image/boy.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Samsāra</div><div class="author-info-description">成为废物的9大根源：1.犹豫不决   2.拖延 3.三分钟热度 4.害怕被拒绝   5.自我设限 6.逃避现实 7.总找藉口 8.恐惧 9.拒绝学习</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">配置Android真机基本环境</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AEAndroid%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83"><span class="toc-number">1.2.</span> <span class="toc-text">二、配置Android基本环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E9%85%8D%E7%BD%AEAndroid-SDK"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 配置Android SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%85%8D%E7%BD%AEUSB%E8%B0%83%E8%AF%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 配置USB调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%85%8D%E7%BD%AEroot%E7%8E%AF%E5%A2%83"><span class="toc-number">1.3.</span> <span class="toc-text">三、配置root环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9F%A5%E7%9C%8B%E5%86%85%E6%A0%B8%E7%89%88%E6%9C%AC"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 查看内核版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%B8%8B%E8%BD%BDkernelsu-apk"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 下载kernelsu.apk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%B8%8B%E8%BD%BD-KernelSU"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 下载 KernelSU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-%E4%B8%8B%E8%BD%BD-KernelSU-img"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1 下载 KernelSU.img</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-%E4%B8%8B%E8%BD%BD-%E7%B3%BB%E7%BB%9F%E5%8C%85%E5%92%8Cpayload-dumper-go"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2 下载 系统包和payload-dumper-go</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-adb-fastboot-%E5%88%B7%E5%85%A5%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.3.3 adb-fastboot+刷入系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%BC%80%E5%90%AFroot%E6%9D%83%E9%99%90"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.4 开启root权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">四、常用的软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-frida"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 frida</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-1-%E5%AE%89%E8%A3%85frida"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">4.1.1 安装frida</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-2-frida-server"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">4.1.2 frida-server</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-MT%E7%AE%A1%E7%90%86%E5%99%A8-NP%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 MT管理器&#x2F;NP管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Zygisk-Next"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Zygisk-Next</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Lsposed%E6%A8%A1%E5%9D%97"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 Lsposed模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E7%AE%97%E6%B3%95%E5%8A%A9%E6%89%8B"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 算法助手</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BD%A0%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">五、你可能遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%80%E7%9B%B4waiting-for-device"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 一直waiting for device</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-lsposed%E6%A8%A1%E5%9D%97%E6%89%93%E4%B8%8D%E5%BC%80%EF%BC%8C%E9%94%99%E8%AF%AF%E6%8A%A5%E5%91%8A%E5%8C%85%E5%90%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E6%9D%A5%E8%87%AA%E4%BA%8E%E7%B3%BB%E7%BB%9F%E5%90%84%E8%87%AA%E6%97%A5%E5%BF%97%E2%80%A6"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 lsposed模块打不开，错误报告包含的数据来自于系统各自日志….</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Wi-Fi-%E2%80%9C%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E5%8F%97%E9%99%90%E2%80%9D"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 Wi-Fi “网络连接受限”</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/15/ollvm-BCF%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="ollvm_BCF源码阅读"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506150134514.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ollvm_BCF源码阅读"/></a><div class="content"><a class="title" href="/2025/06/15/ollvm-BCF%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="ollvm_BCF源码阅读">ollvm_BCF源码阅读</a><time datetime="2025-06-14T17:29:44.000Z" title="发表于 2025-06-15 01:29:44">2025-06-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/" title="配置Android真机基本环境"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="配置Android真机基本环境"/></a><div class="content"><a class="title" href="/2025/04/30/%E9%85%8D%E7%BD%AEAndroid%E7%9C%9F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83/" title="配置Android真机基本环境">配置Android真机基本环境</a><time datetime="2025-04-30T04:36:09.000Z" title="发表于 2025-04-30 12:36:09">2025-04-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/26/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="IDA使用技巧"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202503260242475.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDA使用技巧"/></a><div class="content"><a class="title" href="/2025/03/26/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="IDA使用技巧">IDA使用技巧</a><time datetime="2025-03-25T18:40:21.000Z" title="发表于 2025-03-26 02:40:21">2025-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/16/AI-agent-zer0-to-one%EF%BC%88%E4%BA%8C%EF%BC%89/" title="AI_agent_zer0_to_one（二）"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202503162110664.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI_agent_zer0_to_one（二）"/></a><div class="content"><a class="title" href="/2025/03/16/AI-agent-zer0-to-one%EF%BC%88%E4%BA%8C%EF%BC%89/" title="AI_agent_zer0_to_one（二）">AI_agent_zer0_to_one（二）</a><time datetime="2025-03-16T13:06:07.000Z" title="发表于 2025-03-16 21:06:07">2025-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/14/AI-agent-zer0-to-one%EF%BC%88%E4%B8%80%EF%BC%89/" title="AI_agent_zer0_to_one（一）"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202503141444075.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI_agent_zer0_to_one（一）"/></a><div class="content"><a class="title" href="/2025/03/14/AI-agent-zer0-to-one%EF%BC%88%E4%B8%80%EF%BC%89/" title="AI_agent_zer0_to_one（一）">AI_agent_zer0_to_one（一）</a><time datetime="2025-03-14T06:35:44.000Z" title="发表于 2025-03-14 14:35:44">2025-03-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506301308548.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Samsāra</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"></div><script async src="/js/title.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
