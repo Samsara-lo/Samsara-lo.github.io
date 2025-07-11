@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Android App启动流程</title>
+      <link href="/2025/07/11/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"/>
+      <url>/2025/07/11/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="Android-系统架构总览"><a href="#Android-系统架构总览" class="headerlink" title="Android 系统架构总览"></a>Android 系统架构总览</h2><p>Android 是基于 Linux 内核的操作系统，其架构从底层到上层主要分为五层：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+---------------------------+</span><br><span class="line">| 应用层 (App layer)       | ← 各种 App，例如 Launcher、微信等</span><br><span class="line">+---------------------------+</span><br><span class="line">| 应用框架层 (Framework)   | ← ActivityManager, PackageManager, WindowManager…</span><br><span class="line">+---------------------------+</span><br><span class="line">| 原生库 &amp; Android Runtime | ← libc, WebKit, SQLite, ART 虚拟机等</span><br><span class="line">+---------------------------+</span><br><span class="line">| HAL (硬件抽象层)         | ← Camera HAL、Audio HAL 等</span><br><span class="line">+---------------------------+</span><br><span class="line">| Linux 内核 (Kernel)      | ← 驱动、调度、内存管理、Binder 驱动等</span><br><span class="line">+---------------------------+</span><br></pre></td></tr></table></figure></p><h2 id="Android-四大组件与生命周期"><a href="#Android-四大组件与生命周期" class="headerlink" title="Android 四大组件与生命周期"></a>Android 四大组件与生命周期</h2><div class="table-container"><table><thead><tr><th>组件</th><th>生命周期关键点</th></tr></thead><tbody><tr><td>Activity</td><td>onCreate → onStart → onResume</td></tr><tr><td>Service</td><td>onCreate → onStartCommand</td></tr><tr><td>BroadcastReceiver</td><td>onReceive</td></tr><tr><td>ContentProvider</td><td>onCreate</td></tr></tbody></table></div><blockquote><p>在 App 冷启动时，Android 会先初始化 ContentProvider，再启动 Application 和主 Activity。</p></blockquote><h2 id="App-启动类型"><a href="#App-启动类型" class="headerlink" title="App 启动类型"></a>App 启动类型</h2><div class="table-container"><table><thead><tr><th>启动类型</th><th>定义</th><th>系统行为</th><th>体验表现</th></tr></thead><tbody><tr><td>冷启动 (Cold Start)</td><td>应用不在内存中，需完全重新创建进程和 Activity</td><td>Zygote fork 新进程，初始化 Application → 启动 Activity</td><td>启动时间长，容易见到冷启动动画或 Splash</td></tr><tr><td>热启动 (Hot Start)</td><td>应用仍在内存，Activity 被暂停或后台</td><td>系统恢复原进程，调用 onResume</td><td>启动很快，瞬间返回</td></tr><tr><td>温启动 (Warm Start)</td><td>进程还在，但 Activity 被销毁，需要重建</td><td>不需重新 fork，但需要重新走 Activity 生命周期</td><td>启动速度介于冷/热之间</td></tr></tbody></table></div><h2 id="常见术语"><a href="#常见术语" class="headerlink" title="常见术语"></a>常见术语</h2><div class="table-container"><table><thead><tr><th>名称</th><th>含义</th></tr></thead><tbody><tr><td>AMS(ActivityManagerService)</td><td>控制四大组件的系统服务，位于 Framework</td></tr><tr><td>WMS( WindowManagerService  )</td><td>控制窗口与 UI 显示，负责 View 的 attach</td></tr><tr><td>PMS  (PackageManagerService)</td><td>提供 App 信息、安装信息、查找组件等</td></tr><tr><td>Zygote</td><td>系统启动时创建的初始进程，负责 fork 所有 App</td></tr><tr><td>Binder</td><td>Android 独有的跨进程通信机制</td></tr><tr><td>ApplicationThread</td><td>App 进程内 Java 层和 AMS 的通信桥梁</td></tr><tr><td>ActivityThread</td><td>App Java 层主线程的控制器</td></tr><tr><td>Instrumentation</td><td>负责真正调用 Activity 生命周期的类</td></tr><tr><td>Intent</td><td>Android 中组件通信和调度的核心对象</td></tr></tbody></table></div><h1 id="Android-App-冷启动"><a href="#Android-App-冷启动" class="headerlink" title="Android App 冷启动"></a>Android App 冷启动</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">用户点击图标</span><br><span class="line">   ↓</span><br><span class="line">Launcher（桌面App）响应点击事件</span><br><span class="line">   ↓</span><br><span class="line">构造并发送启动Intent（startActivity）</span><br><span class="line">   ↓</span><br><span class="line">Binder调用 → ActivityTaskManagerService（AMS）</span><br><span class="line">   ↓</span><br><span class="line">判断目标进程是否存在 → 不存在</span><br><span class="line">   ↓</span><br><span class="line">通过 Zygote fork 新进程</span><br><span class="line">   ↓</span><br><span class="line">子进程启动 → 调用 ActivityThread.main()</span><br><span class="line">   ↓</span><br><span class="line">初始化 Application → 启动目标 Activity</span><br></pre></td></tr></table></figure><h2 id="Launcher-发起启动请求"><a href="#Launcher-发起启动请求" class="headerlink" title="Launcher 发起启动请求"></a>Launcher 发起启动请求</h2><h3 id="Launcher"><a href="#Launcher" class="headerlink" title="Launcher"></a>Launcher</h3><p>Launcher: Android 桌面是一个系统内置 App<br>点击桌面图标，其实就是 Launcher App 收到了一个点击事件，然后用 Intent 去请求启动另一个 App。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public boolean onClickAppShortcut(View v) &#123;</span><br><span class="line">    Intent intent = v.getTag();</span><br><span class="line">    startActivitySafely(v, intent, itemInfo);  // 走到 startActivity()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记整理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> APP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>llvm&amp;ollvm初探</title>
       <link href="/2025/07/11/llvm/"/>
       <url>/2025/07/11/llvm/</url>
