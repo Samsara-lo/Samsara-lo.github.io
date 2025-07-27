@@ -1,0 +1,359 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Android App启动流程 | Samsāraのblog</title><meta name="author" content="Samsāra"><meta name="copyright" content="Samsāra"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础Android 系统架构总览Android 是基于 Linux 内核的操作系统，其架构从底层到上层主要分为五层：1234567891011+---------------------------+| 应用层 (App layer)       | ← 各种 App，例如 Launcher、微信等+---------------------------+| 应用框架层 (Framework)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Android App启动流程">
+<meta property="og:url" content="http://example.com/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B.html">
+<meta property="og:site_name" content="Samsāraのblog">
+<meta property="og:description" content="基础Android 系统架构总览Android 是基于 Linux 内核的操作系统，其架构从底层到上层主要分为五层：1234567891011+---------------------------+| 应用层 (App layer)       | ← 各种 App，例如 Launcher、微信等+---------------------------+| 应用框架层 (Framework)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507111636286.png">
+<meta property="article:published_time" content="2025-07-11T14:04:59.000Z">
+<meta property="article:modified_time" content="2025-07-11T14:50:24.257Z">
+<meta property="article:author" content="Samsāra">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="APP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507111636286.png"><link rel="shortcut icon" href="/image/miao.png"><link rel="canonical" href="http://example.com/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android App启动流程',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/styles/main.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/image/chuyin.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/image/myavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间线</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(/image/chuyin.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Samsāraのblog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间线</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Android App启动流程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="Android-系统架构总览"><a href="#Android-系统架构总览" class="headerlink" title="Android 系统架构总览"></a>Android 系统架构总览</h2><p>Android 是基于 Linux 内核的操作系统，其架构从底层到上层主要分为五层：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+---------------------------+</span><br><span class="line">| 应用层 (App layer)       | ← 各种 App，例如 Launcher、微信等</span><br><span class="line">+---------------------------+</span><br><span class="line">| 应用框架层 (Framework)   | ← ActivityManager, PackageManager, WindowManager…</span><br><span class="line">+---------------------------+</span><br><span class="line">| 原生库 &amp; Android Runtime | ← libc, WebKit, SQLite, ART 虚拟机等</span><br><span class="line">+---------------------------+</span><br><span class="line">| HAL (硬件抽象层)         | ← Camera HAL、Audio HAL 等</span><br><span class="line">+---------------------------+</span><br><span class="line">| Linux 内核 (Kernel)      | ← 驱动、调度、内存管理、Binder 驱动等</span><br><span class="line">+---------------------------+</span><br></pre></td></tr></table></figure></p>
+<h2 id="Android-四大组件与生命周期"><a href="#Android-四大组件与生命周期" class="headerlink" title="Android 四大组件与生命周期"></a>Android 四大组件与生命周期</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>生命周期关键点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activity</td>
+<td>onCreate → onStart → onResume</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>onCreate → onStartCommand</td>
+</tr>
+<tr>
+<td>BroadcastReceiver</td>
+<td>onReceive</td>
+</tr>
+<tr>
+<td>ContentProvider</td>
+<td>onCreate</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>在 App 冷启动时，Android 会先初始化 ContentProvider，再启动 Application 和主 Activity。</p>
+</blockquote>
+<h2 id="App-启动类型"><a href="#App-启动类型" class="headerlink" title="App 启动类型"></a>App 启动类型</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>启动类型</th>
+<th>定义</th>
+<th>系统行为</th>
+<th>体验表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷启动 (Cold Start)</td>
+<td>应用不在内存中，需完全重新创建进程和 Activity</td>
+<td>Zygote fork 新进程，初始化 Application → 启动 Activity</td>
+<td>启动时间长，容易见到冷启动动画或 Splash</td>
+</tr>
+<tr>
+<td>热启动 (Hot Start)</td>
+<td>应用仍在内存，Activity 被暂停或后台</td>
+<td>系统恢复原进程，调用 onResume</td>
+<td>启动很快，瞬间返回</td>
+</tr>
+<tr>
+<td>温启动 (Warm Start)</td>
+<td>进程还在，但 Activity 被销毁，需要重建</td>
+<td>不需重新 fork，但需要重新走 Activity 生命周期</td>
+<td>启动速度介于冷/热之间</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="常见术语"><a href="#常见术语" class="headerlink" title="常见术语"></a>常见术语</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMS(ActivityManagerService)</td>
+<td>控制四大组件的系统服务，位于 Framework</td>
+</tr>
+<tr>
+<td>WMS( WindowManagerService  )</td>
+<td>控制窗口与 UI 显示，负责 View 的 attach</td>
+</tr>
+<tr>
+<td>PMS  (PackageManagerService)</td>
+<td>提供 App 信息、安装信息、查找组件等</td>
+</tr>
+<tr>
+<td>Zygote</td>
+<td>系统启动时创建的初始进程，负责 fork 所有 App</td>
+</tr>
+<tr>
+<td>Binder</td>
+<td>Android 独有的跨进程通信机制</td>
+</tr>
+<tr>
+<td>ApplicationThread</td>
+<td>App 进程内 Java 层和 AMS 的通信桥梁</td>
+</tr>
+<tr>
+<td>ActivityThread</td>
+<td>App Java 层主线程的控制器</td>
+</tr>
+<tr>
+<td>Instrumentation</td>
+<td>负责真正调用 Activity 生命周期的类</td>
+</tr>
+<tr>
+<td>Intent</td>
+<td>Android 中组件通信和调度的核心对象</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="Android-App-冷启动"><a href="#Android-App-冷启动" class="headerlink" title="Android App 冷启动"></a>Android App 冷启动</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">用户点击图标</span><br><span class="line">   ↓</span><br><span class="line">Launcher（桌面App）响应点击事件</span><br><span class="line">   ↓</span><br><span class="line">构造并发送启动Intent（startActivity）</span><br><span class="line">   ↓</span><br><span class="line">Binder调用 → ActivityTaskManagerService（AMS）</span><br><span class="line">   ↓</span><br><span class="line">判断目标进程是否存在 → 不存在</span><br><span class="line">   ↓</span><br><span class="line">通过 Zygote fork 新进程</span><br><span class="line">   ↓</span><br><span class="line">子进程启动 → 调用 ActivityThread.main()</span><br><span class="line">   ↓</span><br><span class="line">初始化 Application → 启动目标 Activity</span><br></pre></td></tr></table></figure>
+<h2 id="Launcher-发起启动请求"><a href="#Launcher-发起启动请求" class="headerlink" title="Launcher 发起启动请求"></a>Launcher 发起启动请求</h2><h3 id="Launcher"><a href="#Launcher" class="headerlink" title="Launcher"></a>Launcher</h3><p>Launcher: Android 桌面是一个系统内置 App<br>点击桌面图标，其实就是 Launcher App 收到了一个点击事件，然后用 Intent 去请求启动另一个 App。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public boolean onClickAppShortcut(View v) &#123;</span><br><span class="line">    Intent intent = v.getTag();</span><br><span class="line">    startActivitySafely(v, intent, itemInfo);  // 走到 startActivity()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/image/myavatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Samsāra</div><div class="author-info-description">QQ：3619184612 欢迎找我交流问题</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Samsara-lo/Samsara-lo.github.io"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">可以一起打一辈子逆向吗喵</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/07/11/llvm/" title="llvm&amp;ollvm初探"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507111632523.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="llvm&amp;ollvm初探"/></a><div class="content"><a class="title" href="/2025/07/11/llvm/" title="llvm&amp;ollvm初探">llvm&amp;ollvm初探</a><time datetime="2025-07-11T08:13:40.000Z" title="发表于 2025-07-11 16:13:40">2025-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/08/Linux%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Linux中的进程通信与多线程"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507071711923.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux中的进程通信与多线程"/></a><div class="content"><a class="title" href="/2025/07/08/Linux%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Linux中的进程通信与多线程">Linux中的进程通信与多线程</a><time datetime="2025-07-07T16:24:34.000Z" title="发表于 2025-07-08 00:24:34">2025-07-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/07/%E5%A4%A9%E5%A0%82%E4%B9%8B%E9%97%A8or%E5%9C%B0%E7%8B%B1%E4%B9%8B%E9%97%A8/" title="Heaven's Gate"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507071712146.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Heaven's Gate"/></a><div class="content"><a class="title" href="/2025/07/07/%E5%A4%A9%E5%A0%82%E4%B9%8B%E9%97%A8or%E5%9C%B0%E7%8B%B1%E4%B9%8B%E9%97%A8/" title="Heaven's Gate">Heaven's Gate</a><time datetime="2025-07-07T09:06:16.000Z" title="发表于 2025-07-07 17:06:16">2025-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/06/%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" title="常见加密算法整理"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202507071712145.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常见加密算法整理"/></a><div class="content"><a class="title" href="/2025/07/06/%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" title="常见加密算法整理">常见加密算法整理</a><time datetime="2025-07-06T09:24:53.000Z" title="发表于 2025-07-06 17:24:53">2025-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/15/ollvm-BCF%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="ollvm_BCF源码阅读"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202506150134514.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ollvm_BCF源码阅读"/></a><div class="content"><a class="title" href="/2025/06/15/ollvm-BCF%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="ollvm_BCF源码阅读">ollvm_BCF源码阅读</a><time datetime="2025-06-14T17:29:44.000Z" title="发表于 2025-06-15 01:29:44">2025-06-15</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/llvm/"><span class="card-category-list-name">llvm</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AE%9E%E6%88%98/"><span class="card-category-list-name">实战</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"><span class="card-category-list-name">源码阅读</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/"><span class="card-category-list-name">笔记整理</span><span class="card-category-list-count">11</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/"><span class="card-category-list-name">练习</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 1.1em; color: #999">靶场</a> <a href="/tags/AI-agent/" style="font-size: 1.5em; color: #99a9bf">AI agent</a> <a href="/tags/llvm/" style="font-size: 1.1em; color: #999">llvm</a> <a href="/tags/os/" style="font-size: 1.1em; color: #999">os</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" style="font-size: 1.1em; color: #999">网络协议</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.1em; color: #999">多线程</a> <a href="/tags/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">加密算法</a> <a href="/tags/IDA-Python/" style="font-size: 1.1em; color: #999">IDA, Python</a> <a href="/tags/obfuscation/" style="font-size: 1.5em; color: #99a9bf">obfuscation</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 1.1em; color: #999">汇编</a> <a href="/tags/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">PE文件结构</a> <a href="/tags/ollvm/" style="font-size: 1.1em; color: #999">ollvm</a> <a href="/tags/TCP/" style="font-size: 1.1em; color: #999">TCP</a> <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%80%9A%E8%AF%86/" style="font-size: 1.1em; color: #999">二进制通识</a> <a href="/tags/AI%E5%AE%89%E5%85%A8/" style="font-size: 1.5em; color: #99a9bf">AI安全</a> <a href="/tags/Windows/" style="font-size: 1.1em; color: #999">Windows</a> <a href="/tags/Linux/" style="font-size: 1.1em; color: #999">Linux</a> <a href="/tags/Android/" style="font-size: 1.1em; color: #999">Android</a> <a href="/tags/AI/" style="font-size: 1.1em; color: #999">AI</a> <a href="/tags/IDA/" style="font-size: 1.1em; color: #999">IDA</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+    <ul class="card-archive-list">
+  
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/07/">
+          <span class="card-archive-list-date">七月 2025</span>
+          <span class="card-archive-list-count">4</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/06/">
+          <span class="card-archive-list-date">六月 2025</span>
+          <span class="card-archive-list-count">1</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/03/">
+          <span class="card-archive-list-date">三月 2025</span>
+          <span class="card-archive-list-count">3</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/01/">
+          <span class="card-archive-list-date">一月 2025</span>
+          <span class="card-archive-list-count">4</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2024/12/">
+          <span class="card-archive-list-date">十二月 2024</span>
+          <span class="card-archive-list-count">3</span>
+        </a>
+      </li>
+    </ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">15</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-07-27T09:20:35.201Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/image/chuyin.png);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Samsāra</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"></div><script async src="/js/title.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
