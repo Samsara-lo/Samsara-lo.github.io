@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>梯度泄露攻击</title>
+      <link href="/2025/10/27/%E6%A2%AF%E5%BA%A6%E6%B3%84%E9%9C%B2%E6%94%BB%E5%87%BB/"/>
+      <url>/2025/10/27/%E6%A2%AF%E5%BA%A6%E6%B3%84%E9%9C%B2%E6%94%BB%E5%87%BB/</url>
+      
+        <content type="html"><![CDATA[<p>阅读笔记</p><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="1、深度神经网络（DNNs）面临的两个问题："><a href="#1、深度神经网络（DNNs）面临的两个问题：" class="headerlink" title="1、深度神经网络（DNNs）面临的两个问题："></a>1、深度神经网络（DNNs）面临的两个问题：</h2><p>（i）如何在一个私密敏感数据的集合上训练模型，以便能够<strong>安全部署</strong>，同时<strong>最大限度地减少敏感训练数据的披露</strong>？</p><p>（ii）使用差分隐私训练的 DNN 模型能否被信任，以<strong>防止其输出侵犯隐私</strong>？</p><h2 id="2、深度学习的隐私风险"><a href="#2、深度学习的隐私风险" class="headerlink" title="2、深度学习的隐私风险"></a>2、深度学习的隐私风险</h2><p>深度学习在训练阶段和预测阶段都<strong>容易受到多种隐私攻击</strong>，这些攻击利用了其庞大的模型参数数量，这些参数足以编码个人数据的细节。在模型训练过程中可以无声地使用相同的监视过程和未经授权的读取操作而不被发现，并且可以使用相同的重建算法<strong>从泄露的梯度中披露私人训练数据</strong>。</p><h2 id="3、差分隐私深度学习"><a href="#3、差分隐私深度学习" class="headerlink" title="3、差分隐私深度学习"></a>3、差分隐私深度学习</h2><blockquote><p><strong>差分隐私:</strong> 差分隐私是一种数学框架，用于确保数据集中个人的隐私。它通过允许对数据进行分析而不泄露数据集中任何个人的敏感信息，从而提供了强有力的隐私保证。</p><blockquote><p>简单的例子：有一个村庄里一共有100人，他们分别不是拥有蓝眼睛就是拥有黄眼睛的人，我们首先查询这一百个人分别有多少个黄眼睛的，得到回答：10人；然后查询除了小A以外有多少黄眼睛的，得到49人，这时候小A的隐私就泄露了。而用了差分隐私以后，查询这一百个人分别有多少个黄眼睛的，得到回答：10%；排除小A以后查询，得到回答：9.09%</p></blockquote><p>差分隐私：设𝒟为可能的输入数据域，ℛ为所有可能输出的范围。随机机制ℳ:𝒟→ℛ满足(ϵ,δ)-差分隐私，如果对于任意两个仅有一个条目不同的输入集A⊆𝒟和A′⊆𝒟：$‖A−A′‖0=1$，方程 1 在0≤δ<1和ϵ>0下成立。$Pr⁡(ℳ(A)∈ℛ)≤eϵPr⁡(ℳ(A′)∈ℛ)+δ.$</p><blockquote><p>这个定义指出，给定δ，一个更小的ϵ将表明ℳ(A)的输出和ℳ(A′)输出之间的差异更小。(ϵ,δ)-差分隐私确保对于任何相邻的A,A′，隐私损失的绝对值被ϵ的概率至少为1−δ。当0≤δ&lt;1时，这个定义意味着观察到的A′的输出最有可能与其相邻输入A的输出相似；而当δ=0时，它表明在A′下观察到的输出高度可能也在下被观察到。由于δ是打破ϵ-差分隐私的上限概率，因此希望δ更小。</p></blockquote></blockquote><p>差分隐私深度学习是发布具有可证明隐私保证的 DNN 模型的实际标准：<strong>对于使用两个最多相差一个元素的相邻输入训练的任何两个模型，极难描述其输出差异。</strong></p><p>换句话说，仅通过观察使用差分隐私学习算法训练的 DNN 模型的输出，<strong>无法判断是否使用了单个示例进行训练</strong>。[M. Abadi, A. Chu, I. Goodfellow, H. B. McMahan, I. Mironov, K. Talwar, and L. Zhang, “Deep learning with differential privacy,” in <em>CCS</em>.   ACM, 2016, pp. 308–318.]首次<strong>使用矩会计方法实现了差分隐私深度学习</strong>，在随机采样下实现了更严格的隐私会计。</p><p>为了调节模型在两个相邻输入下的最大影响，传统方法通过首先<strong>裁剪梯度</strong>，然后应用<strong>差分隐私控制的噪声来扰动梯度</strong>，在使用随机梯度下降（SGD）算法之前，确保<strong>每个梯度下降步骤都是差分隐私的</strong>。 基于差分隐私算法的组合特性，在完成所有训练步骤后生成的最终模型提供了一定程度的差分隐私。</p><h1 id="梯度泄露威胁模型"><a href="#梯度泄露威胁模型" class="headerlink" title="梯度泄露威胁模型"></a><strong>梯度泄露威胁模型</strong></h1><p>梯度泄露攻击是深度学习背景下最相关的隐私威胁，其中好奇或恶意的内部人员可能对梯度进行未经授权的读取，并根据<strong>通过监视每一步 SGD 迭代中使用的逐层梯度获得的梯度来重建私有训练数据</strong>。</p><p>此类内部威胁<strong>不会直接损害训练模型的准确性</strong>，因此通过反应性防御方法更难检测和缓解。我们认为，具有差分隐私的深度学习方法可以构建出对抗此类威胁的最佳防御方法之一。</p><p>我们的威胁模型对内部对手做出以下<strong>假设</strong>：</p><p>(1)内部对手在训练之前无法获得加密的训练数据；</p><p>(2)内部对手无意损害训练过程或训练模型的品质；</p><p>(3)内部对手可能获得中间模型训练参数，这些参数通常被保存为检查点数据，以允许从给定步骤恢复迭代训练。 </p><p><strong>梯度泄露攻击不需要任何关于 DNN 训练算法的先验知识</strong>，它<strong>仅利用泄露的梯度上的独立重建算法</strong>来<strong>推断并披露私有训练数据</strong>，同时保持训练的完整性。</p><h1 id="文献"><a href="#文献" class="headerlink" title="文献"></a>文献</h1><p><a href="https://ar5iv.labs.arxiv.org/html/2112.13178?_immersive_translate_auto_translate=1">M. Fredrikson, S. Jha, and T. Ristenpart, “Model inversion attacks that exploit confidence information and basic countermeasures,” in CCS.   ACM, 2015, pp. 1322–1333</a></p><p><a href="https://arxiv.org/abs/1906.08935">L. Zhu, Z. Liu, and S. Han, “Deep leakage from gradients,” in <em>NeurIPS</em>, 2019, pp. 14 747–14 756.</a><br><a href="https://arxiv.org/abs/2001.02610">B. Zhao, K. R. Mopuri, and H. Bilen, “idlg: Improved deep leakage from gradients,” <em>arXiv preprint arXiv:2001.02610</em>, 2020.</a><br>Deep Leakage from Gradients<br><a href="https://arxiv.org/abs/2003.14053">J. Geiping, H. Bauermeister, H. Dröge, and M. Moeller, “Inverting gradients - how easy is it to break privacy in federated learning?” in <em>NeurIPS</em>, 2020, pp. 16 937–16 947.</a><br><a href="https://arxiv.org/abs/2010.07733">J. Zhu and M. Blaschko, “R-gap: Recursive gradient attack on privacy,” <em>arXiv preprint arXiv:2010.07733</em>, 2020.</a><br><a href="https://arxiv.org/abs/2104.07586">H. Yin, A. Mallya, A. Vahdat, J. M. Alvarez, J. Kautz, and P. Molchanov, “See through gradients: Image batch recovery via gradinversion,” in <em>CVPR</em>.   IEEE, 2021.</a><br><a href="https://arxiv.org/abs/2004.10397">W. Wei, L. Liu, M. Loper, K.-H. Chow, M. E. Gursoy, S. Truex, and Y. Wu, “A framework for evaluating client privacy leakages in federated learning,” in <em>ESORICS</em>.   Springer, 2020, pp. 545–566.</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记整理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI安全 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>强网杯 2025 WriteUp + 复现ing</title>
       <link href="/2025/10/20/2025%E5%BC%BA%E7%BD%91%E6%9D%AF/"/>
       <url>/2025/10/20/2025%E5%BC%BA%E7%BD%91%E6%9D%AF/</url>
