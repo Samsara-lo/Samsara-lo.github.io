@@ -19,6 +19,16 @@
 
   var items = Array.prototype.slice.call(container.querySelectorAll('.recent-post-item'));
 
+  // 将图片URL通过无侵入CDN压缩（wsrv.nl）
+  function optimizeUrl(url) {
+    if (!url) return url;
+    if (/^data:/.test(url)) return url;
+    if (/^https?:\/\/wsrv\.nl\//.test(url)) return url; // already optimized
+    // 绝对或相对地址都支持
+    var abs = url[0] === '/' ? (location.origin + url) : url;
+    return 'https://wsrv.nl/?url=' + encodeURIComponent(abs) + '&w=900&q=70&output=webp';
+  }
+
   // 懒加载：第4篇起，暂存图片src到data-src
   function prepareLazy(item) {
     var imgs = item.querySelectorAll('img');
@@ -26,13 +36,21 @@
       if (img.dataset.lazyPrepared) return;
       var src = img.getAttribute('src');
       if (src) {
-        img.setAttribute('data-src', src);
+        img.setAttribute('data-src', optimizeUrl(src));
         img.removeAttribute('src');
         img.dataset.lazyPrepared = '1';
       }
     });
   }
   for (var i = 3; i < items.length; i++) prepareLazy(items[i]);
+
+  // 首屏前三篇直接替换为压缩后的地址
+  for (var j = 0; j < Math.min(3, items.length); j++) {
+    items[j].querySelectorAll('img').forEach(function (img) {
+      var cur = img.getAttribute('src');
+      if (cur) img.setAttribute('src', optimizeUrl(cur));
+    });
+  }
 
   // 观察出现即加载；提前 400px 预判
   var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {

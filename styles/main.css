@@ -119,3 +119,60 @@ body {
     background: transparent !important;
 }
 
+/* Dark mode: deepen overall tone */
+[data-theme=dark] #web_bg::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+
+[data-theme=dark] #aside-content>.card-widget,
+[data-theme=dark] #aside-content>.sticky_layout>.card-widget,
+[data-theme=dark] #aside-content>.card-widget.card-info,
+[data-theme=dark] #aside-content>.card-widget.card-announcement{
+    background: rgba(26, 28, 36, 0.78) !important;
+    color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+[data-theme=dark] #aside-content .card-widget a{
+    color: #cbd5ff;
+}
+[data-theme=dark] #aside-content .card-widget .item-headline,
+[data-theme=dark] #aside-content .card-widget .item-title{
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/* Post page uses cover as background with extra overlay for readability */
+.use-post-bg #web_bg {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+}
+.use-post-bg #web_bg::before {
+    content: "";
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    z-index: 0;
+}
+[data-theme=dark].use-post-bg #web_bg::before {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* 提升正文可读性：为文章主体增加半透明底与轻微模糊 */
+.use-post-bg #post {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(2px);
+}
+[data-theme=dark].use-post-bg #post {
+    background: rgba(26, 28, 36, 0.86) !important;
+    backdrop-filter: blur(2px);
+}
+
