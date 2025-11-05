@@ -162,7 +162,7 @@ body {
     pointer-events: none;
     z-index: 0;
 }
-[data-theme=dark].use-post-bg #web_bg::before {
+html[data-theme=dark] .use-post-bg #web_bg::before {
     background: rgba(0, 0, 0, 0.7);
 }
 
@@ -171,7 +171,7 @@ body {
     background: rgba(255, 255, 255, 0.82) !important;
     backdrop-filter: blur(2px);
 }
-[data-theme=dark].use-post-bg #post {
+html[data-theme=dark] .use-post-bg #post {
     background: rgba(26, 28, 36, 0.86) !important;
     backdrop-filter: blur(2px);
 }
