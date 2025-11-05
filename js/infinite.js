@@ -7,9 +7,15 @@
   var container = document.getElementById('recent-posts');
   if (!container) return;
 
-  // 隐藏内置分页按钮，避免出现在列表中部
+  // 将内置分页条固定到列表底部
   var pager = document.querySelector('nav.pagination, .pagination');
-  if (pager) pager.style.display = 'none';
+  function stickPagerToBottom() {
+    if (!pager) return;
+    if (container.nextSibling !== pager) {
+      container.parentNode.insertBefore(pager, container.nextSibling);
+    }
+  }
+  stickPagerToBottom();
 
   var items = Array.prototype.slice.call(container.querySelectorAll('.recent-post-item'));
 
@@ -114,6 +120,7 @@
         });
         currentPage += 1;
         prefetchNext();
+        stickPagerToBottom();
       })
       .catch(function () { reachedEnd = true; })
       .finally(function () { isLoading = false; });
