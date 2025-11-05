@@ -97,6 +97,25 @@ body {
 }
 #web_bg {
     background-color: transparent !important;
-    background-image: none !important;
+}
+
+/* Footer: keep only author name */
+#footer .framework-info {
+    display: none !important;
+}
+#footer .copyright {
+    visibility: hidden; /* hide original text like ©2019 - 2025 By ... */
+}
+#footer .copyright::after {
+    content: "Samsāra";
+    visibility: visible;
+}
+
+/* Use cover image as page background (remove white blocks) */
+#content-inner,
+#recent-posts,
+.layout > #post,
+.layout > #page {
+    background: transparent !important;
 }
 
