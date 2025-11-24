@@ -115,7 +115,8 @@ body {
 #content-inner,
 #recent-posts,
 .layout > #post,
-.layout > #page {
+.layout > #page,
+.layout > #archive {
     background: transparent !important;
 }
 
@@ -172,6 +173,34 @@ html[data-theme=dark] .use-post-bg #web_bg::before {
     backdrop-filter: blur(2px);
 }
 html[data-theme=dark] .use-post-bg #post {
+    background: rgba(26, 28, 36, 0.86) !important;
+    backdrop-filter: blur(2px);
+}
+
+/* General pages (archives / categories / tags / links / about) use cover as background */
+.use-page-bg #web_bg {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+}
+.use-page-bg #web_bg::before {
+    content: "";
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    z-index: 0;
+}
+html[data-theme=dark] .use-page-bg #web_bg::before {
+    background: rgba(0, 0, 0, 0.7);
+}
+.use-page-bg #archive,
+.use-page-bg #page {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(2px);
+}
+html[data-theme=dark] .use-page-bg #archive,
+html[data-theme=dark] .use-page-bg #page {
     background: rgba(26, 28, 36, 0.86) !important;
     backdrop-filter: blur(2px);
 }
