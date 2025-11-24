@@ -205,8 +205,7 @@ html[data-theme=dark] .use-page-bg #page {
     backdrop-filter: blur(2px);
 }
 
-/* Friend links: force site name to white */
-.type-link .site-card .info .title {
-    color: #ffffff !important;
-}
+/* Friend links: site name color - light: black, dark: white */
+.type-link .site-card .info .title { color: #111111 !important; }
+html[data-theme=dark] .type-link .site-card .info .title { color: #ffffff !important; }
 
