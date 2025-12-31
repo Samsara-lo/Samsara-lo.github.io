@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>2025年终总结 | Samsāraのblog</title><meta name="author" content="Samsāra"><meta name="copyright" content="Samsāra"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="2025年终总结 要念念不忘，念念不忘。  本来不准备写年终总结了，但是和51聊了两句又兴致起来想写些什么。其实在年中的时候就写了一点年终小结（？）谁家年终小结从年中开始写 大一的学习经历其实在之前的文章里写的差不多了：大一学习一年Binary的总结。那便想到什么便写些什么吧，还是有些恍然怎么大二上都要结束了。  关于AI安全：  年初的时候受到一些不知名的影响，也是因为接触到的人太有限了，总而言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025年终总结">
+<meta property="og:url" content="https://samsara-lo.github.io/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Samsāraのblog">
+<meta property="og:description" content="2025年终总结 要念念不忘，念念不忘。  本来不准备写年终总结了，但是和51聊了两句又兴致起来想写些什么。其实在年中的时候就写了一点年终小结（？）谁家年终小结从年中开始写 大一的学习经历其实在之前的文章里写的差不多了：大一学习一年Binary的总结。那便想到什么便写些什么吧，还是有些恍然怎么大二上都要结束了。  关于AI安全：  年初的时候受到一些不知名的影响，也是因为接触到的人太有限了，总而言">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg">
+<meta property="article:published_time" content="2025-12-30T11:53:57.000Z">
+<meta property="article:modified_time" content="2025-12-31T16:30:23.028Z">
+<meta property="article:author" content="Samsāra">
+<meta property="article:tag" content="总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg"><link rel="shortcut icon" href="/image/miao.png"><link rel="canonical" href="https://samsara-lo.github.io/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2025年终总结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/styles/main.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/image/chuyin.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/image/myavatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间线</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-info-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Samsāraのblog</span></a><a class="nav-page-title" href="/"><span class="site-name">2025年终总结</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 秘籍</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间线</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-info-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">2025年终总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-30T11:53:57.000Z" title="发表于 2025-12-30 19:53:57">2025-12-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-31T16:30:23.028Z" title="更新于 2026-01-01 00:30:23">2026-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="2025年终总结"><a href="#2025年终总结" class="headerlink" title="2025年终总结"></a>2025年终总结</h1><blockquote>
+<p>要念念不忘，念念不忘。</p>
+</blockquote>
+<p>本来不准备写年终总结了，但是和51聊了两句又兴致起来想写些什么。其实在年中的时候就写了一点年终小结（？）<del>谁家年终小结从年中开始写</del></p>
+<p>大一的学习经历其实在之前的文章里写的差不多了：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI1Mjk2MTM1OQ==&amp;mid=2247485624&amp;idx=1&amp;sn=9f2dc4f025ca7c2a35b549b22bcd5c70&amp;chksm=e892cc17f891ed724899af8cb35c517d770b34f3ae67b970ba2c673bf95cbade290c037ed54b&amp;mpshare=1&amp;srcid=0708EG2QnX70z9sJJ2wOSaR6&amp;sharer_shareinfo=1c07ba5e6f8b7abb4b47bc495aa8ddcf&amp;sharer_shareinfo_first=0383d18f43ff814814b5130154f27a15&amp;from=timeline&amp;scene=2&amp;subscene=2&amp;sessionid=1754551476&amp;clicktime=1754553727&amp;enterid=1754553727&amp;ascene=45&amp;fasttmpl_type=0&amp;fasttmpl_fullversion=7853062-zh_CN-zip&amp;fasttmpl_flag=0&amp;realreporttime=1754553727471&amp;devicetype=android-31&amp;version=28003d58&amp;nettype=cmnet&amp;abtest_cookie=AAACAA%3D%3D&amp;lang=zh_CN&amp;countrycode=CN&amp;exportkey=n_ChQIAhIQZJk4ENDNnTaGg6AuToT8XxLxAQIE97dBBAEAAAAAAAD4BxiJvtIAAAAOpnltbLcz9gKNyK89dVj0LOB%2FnW15dK%2FmHPWJPB80k89ers%2F%2FmGMQzuGWTIgvjd8Gqr8Ac8qmHh8L%2B9yoISqiBHMSXDiubp%2BNbUIPTHfSKY%2BnXZJz6EUNDy6rDdKNArlVpJiMBwItqAkzpYWO%2FpwgYeKamz8hk11AMpjHZ4WmA%2B9OoCsl1K2c3nfi96Yr8%2BH4RZ4y1Vq25XzySzugtLsKdVcekMG%2B%2BbEikd4v9sp5a%2B%2FmmeJ3ennMhCYq4T0Zy9MfQCab%2FlEBNcP0s3zSJh%2Fk3Gx3Cs%2Ba75Kd63A%3D&amp;pass_ticket=GfA2bDyk1Ump5I9lbEo8dSuhUSPVjg4Mvza%2BVLEaLSPvPfO4LqZ276W%2FBuRvaBYH&amp;wx_header=3">大一学习一年Binary的总结</a>。那便想到什么便写些什么吧，还是有些恍然怎么大二上都要结束了。</p>
+<ul>
+<li><strong>关于AI安全：</strong></li>
+</ul>
+<p>年初的时候受到一些不知名的影响，也是因为接触到的人太有限了，总而言之是很迷茫，感觉再这么学下去要完蛋了，就去搞AI安全了。当时没学多久发的文章就被看雪加精了，后面又收到了乙方的offer，虽然没去但是太有成就感了，当时觉得AI真是太好玩了。但其实说是搞AI安全其实也没真正学多少，我现在看年初写的东西写的真烂啊草。</p>
+<p>还是很感谢无名侠学长和石学姐的，在上半年的时候和我聊了很多，我一开始学AI安全也是收到他们的影响。后面和石学姐一起打了国赛和长城杯的作品赛，其实我一开始以为是水赛，但是针对去做了发现还是挺有含金量的，最后遗憾止步三等奖第一名痛失1w块。后面进二进制磨剑工作组，大爹比我想的亲民好多（）然后最近也渐渐能做一些实战性的demo了。</p>
+<p>其实年中的时候我是很后悔学了AI安全的，原文是：</p>
+<ul>
+<li>说不后悔大一下专门去搞AI了是假的，虽然也不是没搞出名堂吧，但是毕竟我还是应该要走逆向的欸，真的占了我好多时间。我不经畅想自己如果一直认认真真搞逆向QWQ</li>
+</ul>
+<blockquote>
+<p>但是以现在来看，我反而很庆幸我至少学过，真正的了解过，欸只能说AI是对的。</p>
+</blockquote>
+<ul>
+<li><strong>关于逆向：</strong></li>
+</ul>
+<p>最感谢的其实是山海关的 hbailu 师傅，是我逆向入门领导人，没有他我就不会学逆向，我大抵会去学web</p>
+<blockquote>
+<p>不得不提我一开始是想学web的，当时进了SYC的招新群，加的是二进制的学姐，然后学姐说Web群还没有建，让我先进Binary的招新群…<br>然后进了Binary的招新群本来是准备去打Pwn的，但是学Pwn也要先学Re，渐渐Re的学长学姐认全了，主要加的学长学姐全是逆向的不好意思去打Pwn了）</p>
+</blockquote>
+<p>他的话从我去年刚开始电脑知识一点都不会，一边打题一边哭（）一直鼓励着我。<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512302038568.png" alt=""></p>
+<p>学习方法上面的文章里应该写了（烧烤，反正就是打比赛打比赛打比赛复现复现复现）自我勉励一下，其实我应该还是挺厉害的，去年这个时候我C语言都不会，一边打题一边哭（）搞了一整天才把最基础的maze做出来。当时了解到SYC之后，就去看有没有其他的联队，当时查到了Nu1L Team，当时真的很向往，但是看招新条件只对大一以及大一以下欸。如今时隔一年，进了当初觉得不可能的Nu1L（点头）认可自己。</p>
+<p>聊聊今年吧，我更从我遇到的各位师傅入手。刚刚和朋友调侃，说是年终总结，其实是感谢信，这一路上遇到了很多很好的师傅。</p>
+<p>SYC里关系最好的是pwn的师傅4ak5ra和reverse的师傅QYQS，我一直有一些理想主义，确实是有战队情怀，我想要Syclover更好，我想要我们的名声重新传扬，希望明年能做到吧。</p>
+<p>Re关系最好的师傅是Astral Prisma，其实全靠他自来熟我也自来熟（乐）加上第一天以后一直聊到现在。让我烧烤一下，其实很早就听到一些他的名声，因为他一直打的很厉害，然后外面的群里也不怎么说话，我一直觉得他是高冷那挂的(然后发现很自来熟很社牛啊，ap好。ap一直在给我逆向答疑，而且我表达了对于未来的迷茫以后甚至给我做了一些规划，给我划了很多以前比赛的重点，真的很庆幸遇到了ap。</p>
+<p>0x401的小花我觉得他很好欺负（）不知道他会不会看我的年终总结，但是欺负他真的很好玩。很厉害的pwn神</p>
+<p>在最开始不坚定的时候遇到了5m10v3，hh和他说了很多豪言壮语还有待实现。</p>
+<p>然后进了被很多师傅找着一起玩好诶，swdd定期催我进度（悲）（我只是不写博客不代表我学习了）（更悲了）然后认识了stm，槐序十七，想线下见面！</p>
+<p>说到线下，今年线下见到seandictionary，然后被骗去喝酒（指指点点）（点点指指）<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202601010026572.jpg" alt=""></p>
+<p>后面和yolo熟起来聊了很多AI啊，misc方面的，认识yolo是因为打了yolo（喵）</p>
+<ul>
+<li><strong>关于恋爱</strong>: </li>
+</ul>
+<p>喵谈恋爱了喵嘻嘻<br><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202601010026849.jpg" alt=""></p>
+<p>再不发太晚了，后续准备列个2026的目标！等我凯旋归来</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://samsara-lo.github.io">Samsāra</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://samsara-lo.github.io/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">https://samsara-lo.github.io/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://samsara-lo.github.io" target="_blank">Samsāraのblog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%80%BB%E7%BB%93/">总结</a></div><div class="post-share"><div class="social-share" data-image="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/12/02/Geek2025%E5%87%BA%E9%A2%98%E5%B0%8F%E8%AE%B0/" title="Geek2025出题小记"><img class="cover" src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512020201052.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Geek2025出题小记</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/image/myavatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Samsāra</div><div class="author-info-description">拼命这个词沉重的就像是怕死</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Samsara-lo/Samsara-lo.github.io"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">可以一起打一辈子逆向吗喵</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">2025年终总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" title="2025年终总结"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2025年终总结"/></a><div class="content"><a class="title" href="/2025/12/30/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" title="2025年终总结">2025年终总结</a><time datetime="2025-12-30T11:53:57.000Z" title="发表于 2025-12-30 19:53:57">2025-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/02/Geek2025%E5%87%BA%E9%A2%98%E5%B0%8F%E8%AE%B0/" title="Geek2025出题小记"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512020201052.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Geek2025出题小记"/></a><div class="content"><a class="title" href="/2025/12/02/Geek2025%E5%87%BA%E9%A2%98%E5%B0%8F%E8%AE%B0/" title="Geek2025出题小记">Geek2025出题小记</a><time datetime="2025-12-01T17:59:14.000Z" title="发表于 2025-12-02 01:59:14">2025-12-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/18/Newstar/" title="Newstar2024"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202511181824809.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Newstar2024"/></a><div class="content"><a class="title" href="/2025/11/18/Newstar/" title="Newstar2024">Newstar2024</a><time datetime="2025-11-18T10:21:43.000Z" title="发表于 2025-11-18 18:21:43">2025-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/27/%E6%A2%AF%E5%BA%A6%E6%B3%84%E9%9C%B2%E6%94%BB%E5%87%BB/" title="梯度泄露攻击"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202510271252149.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="梯度泄露攻击"/></a><div class="content"><a class="title" href="/2025/10/27/%E6%A2%AF%E5%BA%A6%E6%B3%84%E9%9C%B2%E6%94%BB%E5%87%BB/" title="梯度泄露攻击">梯度泄露攻击</a><time datetime="2025-10-27T04:51:03.000Z" title="发表于 2025-10-27 12:51:03">2025-10-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/20/2025%E5%BC%BA%E7%BD%91%E6%9D%AF/" title="强网杯 2025 WriteUp + 复现ing"><img src="https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202510201309314.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="强网杯 2025 WriteUp + 复现ing"/></a><div class="content"><a class="title" href="/2025/10/20/2025%E5%BC%BA%E7%BD%91%E6%9D%AF/" title="强网杯 2025 WriteUp + 复现ing">强网杯 2025 WriteUp + 复现ing</a><time datetime="2025-10-19T16:00:00.000Z" title="发表于 2025-10-20 00:00:00">2025-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://raw.githubusercontent.com/Samsara-lo/TyporaPics/main/test/202512301956371.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Samsāra</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"></div><script async src="/js/title.js"></script><script async src="/js/infinite.js"></script><script src="/js/post-bg.js"></script><script src="/js/page-bg.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
