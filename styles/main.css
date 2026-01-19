@@ -1,89 +1,38 @@
 
-/* 侧边栏个人信息卡片动态渐变色 */
-#aside-content>.card-widget.card-info{
-    background: linear-gradient(-45deg, rgba(255, 225, 245, 0.6), 
-rgba(255, 225, 225, 0.9), 
-rgba(225, 255, 251, 0.9), 
-rgba(255, 225, 255, 0.6));
+/* Layout Width Override */
+.layout {
+    max-width: 1400px !important;
 }
-[data-theme=dark] #aside-content>.card-widget.card-info {
-    background: linear-gradient(-45deg, rgb(225, 238, 255), 
-    rgba(225, 255, 253, 0.9), 
-    rgba(225, 243, 255, 0.9), 
-    rgba(255, 225, 253, 0.6));
-}
-/* 侧边栏公告栏卡片渐变色 */
-#aside-content>.card-widget.card-announcement{
-    background: linear-gradient(-45deg, rgba(255, 225, 245, 0.6), 
-    rgba(255, 225, 225, 0.9), 
-    rgba(225, 255, 251, 0.9), 
-    rgba(255, 225, 255, 0.6));
-}
-[data-theme=dark] #aside-content>.card-widget.card-announcement{
-    background: linear-gradient(-45deg, rgba(255, 225, 245, 0.6), 
-    rgba(255, 225, 225, 0.9), 
-    rgba(225, 255, 251, 0.9), 
-    rgba(255, 225, 255, 0.6));
-}
-/* 侧边栏目录最新文章卡片渐变色 */
-#aside-content>.sticky_layout>.card-widget{
-    background: linear-gradient(-45deg, rgba(255, 225, 245, 0.6), 
-    rgba(255, 225, 225, 0.9), 
-    rgba(225, 255, 251, 0.9), 
-    rgba(255, 225, 255, 0.6));
-}
-[data-theme=dark] #aside-content>.sticky_layout>.card-widget{
-    background: linear-gradient(-45deg, rgba(255, 225, 245, 0.6), 
-    rgba(255, 225, 225, 0.9), 
-    rgba(225, 255, 251, 0.9), 
-    rgba(255, 225, 255, 0.6));
-}
-/* 个人信息Follow me按钮 
-#aside-content>.card-widget.card-info>#card-info-btn {
-    background-color: #bcdedf;
-    border-radius: 8px;
-}*/
 
-/*文章页面*/
-/* .layout>#post {
-    background: linear-gradient(-45deg, rgba(225, 255, 252, 0.8), 
-rgba(255, 225, 229, 0.9), 
-rgba(225, 255, 225, 0.9), 
-rgba(253, 255, 225, 0.8));
+/* 侧边栏个人信息卡片 - Neutral/Glass style */
+#aside-content>.card-widget.card-info {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px);
 }
-[data-theme=dark] .layout>#post {
-    background: linear-gradient(-45deg, rgba(24,40,72,.2), 
-rgba(35,37,58,.9), 
-rgba(35,37,58,.9), 
-rgba(24,40,72,.2));
-} */
-/*主页文章预览页面
-#recent-posts>.recent-post-item{
-    background: linear-gradient(-45deg, rgba(225, 255, 252, 0.8), 
-    rgba(255, 225, 229, 0.9), 
-    rgba(225, 255, 225, 0.9), 
-    rgba(253, 255, 225, 0.8));
+
+[data-theme=dark] #aside-content>.card-widget.card-info {
+    background: rgba(26, 28, 36, 0.85) !important;
 }
-[data-theme=dark] #recent-posts>.recent-post-item{
-    background: linear-gradient(-45deg, rgba(24,40,72,.2), 
-rgba(35,37,58,.9), 
-rgba(35,37,58,.9), 
-rgba(24,40,72,.2));
-}*/
- 
-/*分类页面
-.layout>#page {
-    background: linear-gradient(-45deg, rgba(225,235,255,.8), 
-rgba(225,235,255,.9), 
-rgba(225,235,255,.9), 
-rgba(225,235,255,.8));
+
+/* 侧边栏公告栏卡片 - Neutral/Glass style */
+#aside-content>.card-widget.card-announcement {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px);
 }
-[data-theme=dark] .layout>#page {
-    background: linear-gradient(-45deg, rgba(24,40,72,.2), 
-rgba(35,37,58,.9), 
-rgba(35,37,58,.9), 
-rgba(24,40,72,.2));
-}*/
+
+[data-theme=dark] #aside-content>.card-widget.card-announcement {
+    background: rgba(26, 28, 36, 0.85) !important;
+}
+
+/* 侧边栏目录最新文章卡片 - Neutral/Glass style */
+#aside-content>.sticky_layout>.card-widget {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px);
+}
+
+[data-theme=dark] #aside-content>.sticky_layout>.card-widget {
+    background: rgba(26, 28, 36, 0.85) !important;
+}
 
 /* 确保顶部图片不被遮挡 */
 header, #header {
@@ -208,4 +157,3 @@ html[data-theme=dark] .use-page-bg #page {
 /* Friend links: site name color - light: black, dark: white */
 .type-link .site-card .info .title { color: #111111 !important; }
 html[data-theme=dark] .type-link .site-card .info .title { color: #ffffff !important; }
-
