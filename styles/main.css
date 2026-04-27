@@ -209,6 +209,77 @@ html[data-theme=dark] .use-page-bg #page {
 .type-link .site-card .info .title { color: #111111 !important; }
 html[data-theme=dark] .type-link .site-card .info .title { color: #ffffff !important; }
 
+/* Root about page: remove the standalone page banner and lift the intro */
+#body-wrap.type-about-home {
+    position: relative;
+}
+
+#body-wrap.type-about-home::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+html[data-theme=dark] #body-wrap.type-about-home::before {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+#body-wrap.type-about-home > header,
+#body-wrap.type-about-home > main,
+#body-wrap.type-about-home > footer {
+    position: relative;
+    z-index: 1;
+}
+
+#body-wrap.type-about-home #page-header.not-top-img {
+    margin-bottom: 0;
+    background: transparent !important;
+}
+
+#body-wrap.type-about-home #page-header .title-seo {
+    display: none;
+}
+
+#body-wrap.type-about-home #page-header.not-top-img #nav {
+    background: rgba(28, 30, 42, 0.28);
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+}
+
+#body-wrap.type-about-home #page-header.not-top-img #nav a,
+#body-wrap.type-about-home #page-header.not-top-img #nav span.site-page,
+#body-wrap.type-about-home #page-header.not-top-img #nav .site-name {
+    color: var(--light-grey);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
+}
+
+#body-wrap.type-about-home #content-inner {
+    padding-top: 24px;
+}
+
+#body-wrap.type-about-home #page {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(2px);
+}
+
+#body-wrap.type-about-home #page > .page-title {
+    display: none;
+}
+
+html[data-theme=dark] #body-wrap.type-about-home #page {
+    background: rgba(26, 28, 36, 0.86) !important;
+    backdrop-filter: blur(2px);
+}
+
+@media screen and (max-width: 768px) {
+    #body-wrap.type-about-home #content-inner {
+        padding-top: 16px;
+    }
+}
+
 /* Layout Width Override */
 .layout {
     max-width: 1400px !important;
