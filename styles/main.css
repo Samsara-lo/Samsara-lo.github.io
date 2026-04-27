@@ -113,11 +113,22 @@ body {
 
 /* Use cover image as page background (remove white blocks) */
 #content-inner,
-#recent-posts,
+#recent-posts {
+    background: transparent !important;
+}
+
 .layout > #post,
 .layout > #page,
 .layout > #archive {
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(2px);
+}
+
+html[data-theme=dark] .layout > #post,
+html[data-theme=dark] .layout > #page,
+html[data-theme=dark] .layout > #archive {
+    background: rgba(26, 28, 36, 0.86) !important;
+    backdrop-filter: blur(2px);
 }
 
 /* Dark mode: deepen overall tone */
