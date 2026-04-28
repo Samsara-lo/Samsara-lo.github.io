@@ -91,6 +91,24 @@ header, #header {
     z-index: 100;
 }
 
+/* Keep desktop nav dropdown above page cards/background overlays. */
+#page-header,
+#page-header #nav {
+    overflow: visible;
+}
+
+#page-header #nav,
+#page-header #menus,
+#page-header #menus .menus_items,
+#page-header #menus .menus_item {
+    z-index: 1000;
+}
+
+#page-header #menus .menus_item_child {
+    z-index: 1001;
+    pointer-events: auto;
+}
+
 /* 避免其他背景色覆盖顶部 */
 body {
     background-color: transparent !important;
