@@ -904,8 +904,6 @@ exp#include &lt;stdio.h&gt;#include &lt;stdint.h&gt;#include &lt;string.h&gt;#in
     <title>Geek2025出题小记</title>
     <url>/2025/12/02/Geek2025%E5%87%BA%E9%A2%98%E5%B0%8F%E8%AE%B0/</url>
     <content><![CDATA[前言也是赶上ddl了）第二天要交wp今天才开始写，不过还是会努力写详细一点回忆一下心路历程的突然发现我怎么有四五题都没上）我的出题源码会放在：https://github.com/Samsara-lo/Geek2025/tree/main
-
-
 ReverseWeek1ez_pyyy下载下来是pyc文件，本意是学习一下pyc文件内容、反编译
 pyc反编译工具：（推荐使用pycdc，可以去了解一下这几个的区别，不过其实都有一定的局限性）
 
