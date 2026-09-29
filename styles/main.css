@@ -318,3 +318,258 @@ html[data-theme=dark] #body-wrap.type-about-home #page {
 #pagination {
     display: none !important;
 }
+
+/* Home profile and year-by-year competition record. */
+#body-wrap.type-about-home #page {
+    --home-muted: #64717c;
+    --home-accent: #2d6274;
+    --home-line: rgba(63, 100, 116, 0.22);
+    padding: 42px 44px 38px;
+}
+
+#body-wrap.type-about-home #article-container #home-intro-title {
+    margin: 0 0 22px;
+    padding: 0;
+    font-size: 30px;
+    letter-spacing: -0.025em;
+    line-height: 1.4;
+}
+
+#body-wrap.type-about-home #article-container .home-greeting,
+#body-wrap.type-about-home #article-container .home-role,
+#body-wrap.type-about-home #article-container .home-status {
+    margin: 0 0 9px;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+#body-wrap.type-about-home #article-container .home-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 22px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+
+#body-wrap.type-about-home #article-container .home-contacts li {
+    display: flex;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+}
+
+#body-wrap.type-about-home .home-contact-label {
+    color: var(--home-muted);
+}
+
+#body-wrap.type-about-home .home-contacts a {
+    overflow-wrap: anywhere;
+}
+
+#body-wrap.type-about-home .home-honors {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--home-line);
+}
+
+#body-wrap.type-about-home #article-container #home-honors-title {
+    margin: 0 0 26px;
+    padding: 0;
+    font-size: 22px;
+    line-height: 1.5;
+}
+
+#body-wrap.type-about-home .home-year-group {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr);
+    column-gap: 24px;
+}
+
+#body-wrap.type-about-home .home-year-group + .home-year-group {
+    margin-top: 24px;
+}
+
+#body-wrap.type-about-home #article-container .home-year {
+    margin: 0;
+    padding: 13px 0 0;
+    color: var(--home-accent);
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.6;
+}
+
+#body-wrap.type-about-home #article-container .home-honors-list {
+    margin: 0;
+    padding: 0 0 0 25px;
+    border-left: 1px solid var(--home-line);
+    list-style: none;
+}
+
+#body-wrap.type-about-home #article-container .home-honors-list li {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 5px 24px;
+    margin: 0;
+    padding: 16px 8px 16px 0;
+    line-height: 1.6;
+}
+
+#body-wrap.type-about-home #article-container .home-honors-list li::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--home-accent);
+    border-radius: 50%;
+    background: var(--card-bg);
+    transform: translateY(-50%);
+}
+
+#body-wrap.type-about-home .home-event {
+    color: var(--text-highlight-color);
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+#body-wrap.type-about-home .home-event-detail {
+    margin-left: 8px;
+    color: var(--home-muted);
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+#body-wrap.type-about-home .home-result {
+    color: var(--home-accent);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#body-wrap.type-about-home .home-placement {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 11px;
+}
+
+#body-wrap.type-about-home .home-rank {
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.06em;
+    line-height: 1.15;
+}
+
+#body-wrap.type-about-home .home-rank-ordinal {
+    margin-left: 2px;
+    font-size: 0.46em;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    vertical-align: super;
+}
+
+#body-wrap.type-about-home .home-scope {
+    color: var(--home-muted);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+}
+
+/* Keep the complete placement available to screen readers. */
+#body-wrap.type-about-home .home-result-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+html[data-theme=dark] #body-wrap.type-about-home #page {
+    --home-muted: #a7b5c0;
+    --home-accent: #9ccedb;
+    --home-line: rgba(148, 182, 195, 0.26);
+}
+
+@media screen and (max-width: 1100px) {
+    #body-wrap.type-about-home .home-year-group {
+        grid-template-columns: 56px minmax(0, 1fr);
+        column-gap: 16px;
+    }
+
+    #body-wrap.type-about-home #article-container .home-honors-list li {
+        column-gap: 14px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #body-wrap.type-about-home #page {
+        padding: 30px 24px;
+    }
+
+    #body-wrap.type-about-home #article-container #home-intro-title {
+        font-size: 27px;
+    }
+
+    #body-wrap.type-about-home .home-year-group {
+        grid-template-columns: 45px minmax(0, 1fr);
+        column-gap: 15px;
+    }
+
+    #body-wrap.type-about-home #article-container .home-year {
+        font-size: 17px;
+        padding-top: 12px;
+    }
+
+    #body-wrap.type-about-home #article-container .home-honors-list {
+        padding-left: 19px;
+    }
+
+    #body-wrap.type-about-home #article-container .home-honors-list li {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 3px 12px;
+        padding: 12px 0;
+    }
+
+    #body-wrap.type-about-home #article-container .home-honors-list li::before {
+        left: -23px;
+        top: 21px;
+    }
+
+    #body-wrap.type-about-home .home-event {
+        font-size: 15px;
+    }
+
+    #body-wrap.type-about-home .home-result {
+        font-size: 13px;
+    }
+
+    #body-wrap.type-about-home .home-result-role {
+        grid-column: 1 / -1;
+    }
+
+    #body-wrap.type-about-home .home-placement {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        gap: 0;
+    }
+
+    #body-wrap.type-about-home .home-scope {
+        font-size: 9px;
+    }
+
+    #body-wrap.type-about-home .home-rank {
+        font-size: 24px;
+    }
+}
