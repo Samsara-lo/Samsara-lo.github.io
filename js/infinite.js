@@ -1,150 +1,180 @@
-/* 首页性能优化 + 无限滚动：
- * 1) 不改变每页文章数量；首屏正常展示。
- * 2) 对第三篇之后的文章资源做懒加载；并预取接下来两篇的图片到缓存。
- * 3) 触底继续加载下一页并追加。
- */
+/* Append the next generated batch to the same article list. */
 (function () {
-  var container = document.getElementById('recent-posts');
-  if (!container) return;
+  'use strict';
 
-  // 将内置分页条固定到列表底部
-  var pager = document.querySelector('nav.pagination, .pagination');
-  function stickPagerToBottom() {
-    if (!pager) return;
-    if (container.nextSibling !== pager) {
-      container.parentNode.insertBefore(pager, container.nextSibling);
+  var dispose = null;
+
+  function init() {
+    if (dispose) dispose();
+    dispose = null;
+
+    var root = document.querySelector('#recent-posts[data-infinite-feed]');
+    if (!root || root.classList.contains('masonry') || !window.fetch || !window.AbortController) return;
+    var list = root.querySelector('.recent-post-items');
+    var pager = root.querySelector('#pagination');
+    if (!list || !pager) return;
+
+    function pageUrl(href, base) {
+      var url = new URL(href, base);
+      if (url.origin !== location.origin) throw new Error('Unexpected page origin');
+      url.hash = '';
+      return url.href;
     }
-  }
-  stickPagerToBottom();
 
-  var items = Array.prototype.slice.call(container.querySelectorAll('.recent-post-item'));
+    function nextPage(scope, base) {
+      var link = scope.querySelector('#pagination a.next, #pagination a[rel="next"]');
+      return link ? pageUrl(link.getAttribute('href'), base) : null;
+    }
 
-  // 将图片URL通过无侵入CDN压缩（wsrv.nl）
-  function optimizeUrl(url) {
-    if (!url) return url;
-    if (/^data:/.test(url)) return url;
-    if (/^https?:\/\/wsrv\.nl\//.test(url)) return url; // already optimized
-    // 绝对或相对地址都支持
-    var abs = url[0] === '/' ? (location.origin + url) : url;
-    return 'https://wsrv.nl/?url=' + encodeURIComponent(abs) + '&w=900&q=70&output=webp';
-  }
+    function articleKey(item, base) {
+      var link = item.querySelector('a.article-title[href]');
+      return link ? new URL(link.getAttribute('href'), base).href : null;
+    }
 
-  // 懒加载：第4篇起，暂存图片src到data-src
-  function prepareLazy(item) {
-    var imgs = item.querySelectorAll('img');
-    imgs.forEach(function (img) {
-      if (img.dataset.lazyPrepared) return;
-      var src = img.getAttribute('src');
-      if (src) {
-        img.setAttribute('data-src', optimizeUrl(src));
-        img.removeAttribute('src');
-        img.dataset.lazyPrepared = '1';
+    var nextUrl = nextPage(root, location.href);
+    var seenPages = new Set([pageUrl(location.href, location.href)]);
+    var seenArticles = new Set();
+    list.querySelectorAll('.recent-post-item').forEach(function (item) {
+      var key = articleKey(item, location.href);
+      if (key) seenArticles.add(key);
+    });
+
+    var status = document.createElement('div');
+    status.className = 'post-feed-status';
+    var message = document.createElement('span');
+    message.setAttribute('role', 'status');
+    message.setAttribute('aria-live', 'polite');
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'post-feed-button';
+    button.textContent = '加载更多';
+    status.append(message, button);
+    root.insertBefore(status, pager);
+    root.classList.add('is-infinite-feed');
+
+    var loading = false;
+    var failed = false;
+    var disposed = false;
+    var controller = null;
+    var observer = null;
+
+    function updateStatus() {
+      list.setAttribute('aria-busy', String(loading));
+      button.disabled = loading;
+      button.hidden = !nextUrl;
+      if (!nextUrl) {
+        message.textContent = '已经到底啦 · 共 ' + seenArticles.size + ' 篇';
+        if (observer) observer.disconnect();
+      } else if (loading) {
+        message.textContent = '正在加载文章…';
+      } else if (failed) {
+        message.textContent = '暂时没加载出来，请重试';
+        button.textContent = '重新加载';
+      } else {
+        message.textContent = '继续往下，还有更多文章';
+        button.textContent = '加载更多';
       }
-    });
-  }
-  for (var i = 3; i < items.length; i++) prepareLazy(items[i]);
+    }
 
-  // 首屏前三篇直接替换为压缩后的地址
-  for (var j = 0; j < Math.min(3, items.length); j++) {
-    items[j].querySelectorAll('img').forEach(function (img) {
-      var cur = img.getAttribute('src');
-      if (cur) img.setAttribute('src', optimizeUrl(cur));
-    });
-  }
+    async function loadMore() {
+      if (disposed || loading || !nextUrl) return;
+      loading = true;
+      failed = false;
+      updateStatus();
+      var requestUrl = nextUrl;
+      controller = new AbortController();
+      var timeout = window.setTimeout(function () { controller.abort(); }, 15000);
 
-  // 观察出现即加载；提前 400px 预判
-  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var el = entry.target;
-      io.unobserve(el);
-      el.querySelectorAll('img[data-src]').forEach(function (img) {
-        img.setAttribute('src', img.getAttribute('data-src'));
-        img.removeAttribute('data-src');
-      });
-      // 预取其后的两篇
-      preloadNextTwo(el);
-    });
-  }, { rootMargin: '400px 0px' }) : null;
-
-  function preloadItem(item) {
-    item.querySelectorAll('img[data-src]').forEach(function (img) {
-      var url = img.getAttribute('data-src');
-      if (!url) return;
-      var im = new Image();
-      im.src = url; // 进入缓存
-    });
-  }
-  function preloadNextTwo(currentItem) {
-    var idx = items.indexOf ? items.indexOf(currentItem) : Array.prototype.indexOf.call(items, currentItem);
-    if (idx < 0) return;
-    var a = items[idx + 1];
-    var b = items[idx + 2];
-    if (a) preloadItem(a);
-    if (b) preloadItem(b);
-  }
-
-  // 绑定观察器
-  items.slice(3).forEach(function (el) { if (io) io.observe(el); });
-
-  // 从 URL 识别当前页码（/page/N/），默认 1
-  var m = (location.pathname || '').match(/\/page\/(\d+)\/?/);
-  var currentPage = m ? parseInt(m[1], 10) : 1;
-  var isLoading = false;
-  var reachedEnd = false;
-  var nextDocCache = null; // 预取缓存
-
-  function nextPageUrl() {
-    return location.origin + '/page/' + (currentPage + 1) + '/';
-  }
-
-  // 预取下一页 HTML
-  function prefetchNext() {
-    if (nextDocCache || reachedEnd) return;
-    fetch(nextPageUrl(), { credentials: 'same-origin' })
-      .then(function (res) { return res.ok ? res.text() : ''; })
-      .then(function (html) {
-        if (!html) return;
-        nextDocCache = new DOMParser().parseFromString(html, 'text/html');
-      })
-      .catch(function () { /* ignore */ });
-  }
-
-  function onScroll() {
-    if (reachedEnd || isLoading) return;
-    var nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 400;
-    if (!nearBottom) { prefetchNext(); return; }
-    isLoading = true;
-
-    (nextDocCache ? Promise.resolve(nextDocCache) : fetch(nextPageUrl(), { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (h) { return h && new DOMParser().parseFromString(h, 'text/html'); }))
-      .then(function (doc) {
-        nextDocCache = null; // 用过即弃
-        if (!doc) {
-          reachedEnd = true;
-          window.removeEventListener('scroll', onScroll);
-          return;
+      try {
+        if (seenPages.has(requestUrl)) throw new Error('Repeated page');
+        var response = await fetch(requestUrl, { signal: controller.signal, credentials: 'same-origin' });
+        if (!response.ok) throw new Error('Could not load page');
+        var html = await response.text();
+        if (disposed) return;
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var source = doc.querySelector('#recent-posts[data-infinite-feed] .recent-post-items');
+        if (!source) throw new Error('Missing article list');
+        var followingUrl = nextPage(doc, requestUrl);
+        if (followingUrl && (followingUrl === requestUrl || seenPages.has(followingUrl))) {
+          throw new Error('Repeated next page');
         }
-        var newItems = doc.querySelectorAll('#recent-posts .recent-post-item');
-        if (!newItems.length) {
-          reachedEnd = true;
-          window.removeEventListener('scroll', onScroll);
-          return;
-        }
-        newItems.forEach(function (el) { 
-          container.appendChild(el);
-          items.push(el);
-          prepareLazy(el);
-          if (io) io.observe(el);
+
+        var fragment = document.createDocumentFragment();
+        var additions = new Set();
+        source.querySelectorAll('.recent-post-item:not(.ads-wrap)').forEach(function (item) {
+          var key = articleKey(item, requestUrl);
+          if (!key || seenArticles.has(key) || additions.has(key)) return;
+          var card = document.importNode(item, true);
+          card.querySelectorAll('img').forEach(function (img) {
+            img.loading = 'lazy';
+            img.decoding = 'async';
+          });
+          fragment.appendChild(card);
+          additions.add(key);
         });
-        currentPage += 1;
-        prefetchNext();
-        stickPagerToBottom();
-      })
-      .catch(function () { reachedEnd = true; })
-      .finally(function () { isLoading = false; });
+        if (!additions.size) throw new Error('No new articles');
+
+        list.appendChild(fragment);
+        additions.forEach(function (key) { seenArticles.add(key); });
+        seenPages.add(requestUrl);
+        nextUrl = followingUrl;
+        var newPager = doc.querySelector('#pagination');
+        pager.replaceChildren();
+        if (newPager) Array.from(newPager.childNodes).forEach(function (node) {
+          pager.appendChild(document.importNode(node, true));
+        });
+        // Refresh only the features used by newly appended content.
+        try {
+          if (window.lazyLoadInstance) window.lazyLoadInstance.update();
+          if (window.pjax) window.pjax.refresh(list);
+        } catch (error) {
+          console.warn('Article enhancement could not refresh', error);
+        }
+      } catch (error) {
+        if (!disposed) failed = true;
+      } finally {
+        window.clearTimeout(timeout);
+        controller = null;
+        loading = false;
+        if (!disposed) {
+          updateStatus();
+          // Re-observe at its new position, including when the viewport is very tall.
+          if (observer && nextUrl && !failed) {
+            observer.unobserve(status);
+            observer.observe(status);
+          }
+        }
+      }
+    }
+
+    button.addEventListener('click', loadMore);
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(function (entries) {
+        if (!failed && entries.some(function (entry) { return entry.isIntersecting; })) loadMore();
+      }, { rootMargin: '500px 0px' });
+      if (nextUrl) observer.observe(status);
+    }
+    updateStatus();
+
+    dispose = function () {
+      disposed = true;
+      if (observer) observer.disconnect();
+      if (controller) controller.abort();
+      button.removeEventListener('click', loadMore);
+      list.removeAttribute('aria-busy');
+      status.remove();
+      root.classList.remove('is-infinite-feed');
+    };
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+  document.addEventListener('pjax:send', function () {
+    if (dispose) dispose();
+    dispose = null;
+  });
+  document.addEventListener('pjax:complete', init);
 })();
-
-

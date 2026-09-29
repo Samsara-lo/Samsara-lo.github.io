@@ -314,9 +314,51 @@ html[data-theme=dark] #body-wrap.type-about-home #page {
     max-width: 1400px !important;
 }
 
-/* 隐藏首页分页器 (Hide Pagination) */
-#pagination {
-    display: none !important;
+/* Keep normal pagination as a fallback until the article feed is ready. */
+#recent-posts.is-infinite-feed > #pagination {
+    display: none;
+}
+
+#recent-posts .post-feed-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    min-height: 64px;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--font-color);
+    font-size: 14px;
+    text-align: center;
+}
+
+#recent-posts .post-feed-button {
+    padding: 6px 15px;
+    border-radius: 5px;
+    background: var(--btn-bg);
+    color: var(--btn-color);
+    font: inherit;
+    cursor: pointer;
+}
+
+#recent-posts .post-feed-button:hover {
+    background: var(--btn-hover-color);
+}
+
+#recent-posts .post-feed-button:focus-visible {
+    outline: 2px solid var(--font-color);
+    outline-offset: 3px;
+}
+
+#recent-posts .post-feed-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+#recent-posts .post-feed-button[hidden] {
+    display: none;
 }
 
 /* Home profile and year-by-year competition record. */
