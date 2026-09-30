@@ -263,6 +263,11 @@ html[data-theme=dark] #body-wrap.type-about-home::before {
     z-index: 1;
 }
 
+/* Keep the entire navigation above the content stacking context. */
+#body-wrap.type-about-home > header {
+    z-index: 2;
+}
+
 #body-wrap.type-about-home #page-header.not-top-img {
     margin-bottom: 0;
     background: transparent !important;
